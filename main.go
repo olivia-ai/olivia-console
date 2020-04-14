@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"flag"
 	"fmt"
 	"github.com/gookit/color"
 	"github.com/gorilla/websocket"
@@ -28,8 +27,6 @@ type Configuration struct {
 	BotName    string
 	UserToken  string
 }
-
-var addr = flag.String("addr", "localhost:8080", "http service address")
 
 // RequestMessage is the structure that uses entry connections to chat with the websocket
 type RequestMessage struct {
@@ -100,11 +97,11 @@ func main() {
 
 	fmt.Println(color.FgRed.Render("Enter message to " + config.BotName + " (for finish - type 'quit'):"))
 
-	myscanner := bufio.NewScanner(os.Stdin)
+	messagescanner := bufio.NewScanner(os.Stdin)
 
 	for {
-		myscanner.Scan()
-		text := myscanner.Text()
+		messagescanner.Scan()
+		text := messagescanner.Text()
 		if strings.ToLower(text) == "quit" {
 			c.SetWriteDeadline(time.Now().Add(1 * time.Second))
 			c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
@@ -181,7 +178,7 @@ func setupConfig(filename string) *Configuration {
 	viper.SetConfigType("toml")
 	viper.AddConfigPath(filepath.Dir("./"))
 
-	if !isExists(filename+".toml"){
+	if !isExists(filename + ".toml") {
 
 		log.Error("Config file does not exist")
 
@@ -189,7 +186,7 @@ func setupConfig(filename string) *Configuration {
 		config.BotName = "Olivia"
 		config.Port = "8080"
 		config.DebugLevel = "error"
-		config.UserToken = GenerateToken(200)
+		config.UserToken = generateUserToken(200)
 
 		viper.Set("host", config.Host)
 		viper.Set("botname", config.BotName)
@@ -232,7 +229,7 @@ func setupConfig(filename string) *Configuration {
 
 		config.UserToken = viper.GetString("usertoken")
 		if len(config.UserToken) == 0 {
-			config.UserToken = GenerateToken(200)
+			config.UserToken = generateUserToken(200)
 			viper.WriteConfig()
 		}
 	}
@@ -240,7 +237,7 @@ func setupConfig(filename string) *Configuration {
 	return &config
 }
 
-func GenerateToken(length int) string {
+func generateUserToken(length int) string {
 
 	chars := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_)°^¨$*£ù%=+:/;.,?-(}{[]&é@#"
 	b := make([]rune, length)
