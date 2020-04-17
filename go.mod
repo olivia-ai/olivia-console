@@ -1,4 +1,4 @@
-module mod
+module github.com/olivia-ai/olivia-console
 
 go 1.13
 

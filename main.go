@@ -6,13 +6,11 @@ import (
 	"fmt"
 	"github.com/gookit/color"
 	"github.com/gorilla/websocket"
+	"github.com/olivia-ai/olivia-console/files"
 	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
-	"math/rand"
 	"net/url"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 )
@@ -21,14 +19,6 @@ const (
 	logFileName    = "logfile.log"
 	configFileName = "config"
 )
-
-type Configuration struct {
-	Port       string
-	Host       string
-	DebugLevel string
-	BotName    string
-	UserToken  string
-}
 
 // RequestMessage is the structure that uses entry connections to chat with the websocket
 type RequestMessage struct {
@@ -62,17 +52,20 @@ type Reminder struct {
 }
 
 func main() {
+	// Setup the logs and the config file
+	files.SetupLog(logFileName)
+	config := files.SetupConfig(configFileName)
+	files.SetupLogLevel(*config)
 
-	setupLog(logFileName)
-	config := setupConfig(configFileName)
-	setupLogLevel(*config)
+	// Initialize the url
+	url := url.URL{Scheme: "ws", Host: config.Host + ":" + config.Port, Path: "/websocket"}
+	log.Info("Connecting to %s..", url.String())
 
-	u := url.URL{Scheme: "ws", Host: config.Host + ":" + config.Port, Path: "/websocket"}
-	log.Info("connecting to %s", u.String())
-
-	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
+	// Start the connection with the websocket
+	c, _, err := websocket.DefaultDialer.Dial(url.String(), nil)
 	if err != nil {
-		log.Fatal("dial:", err)
+		fmt.Println("Unable to connect the API.")
+		log.Fatal("Dial:", err)
 	}
 	defer c.Close()
 
@@ -157,122 +150,4 @@ func main() {
 		inf = response.Information
 	}
 }
-func setupLogLevel(configuration Configuration) {
 
-	switch configuration.DebugLevel {
-	case "debug":
-		log.SetLevel(log.DebugLevel)
-	case "info":
-		log.SetLevel(log.InfoLevel)
-	case "warn":
-		log.SetLevel(log.WarnLevel)
-	case "error":
-		log.SetLevel(log.ErrorLevel)
-	default:
-		log.SetLevel(log.ErrorLevel)
-	}
-}
-
-func setupConfig(filename string) *Configuration {
-
-	config := Configuration{}
-	viper.SetConfigName(filename)
-	viper.SetConfigType("toml")
-	viper.AddConfigPath(filepath.Dir("./"))
-
-	if !isExists(filename + ".toml") {
-
-		log.Error("Config file does not exist")
-
-		config.Host = "localhost"
-		config.BotName = "Olivia"
-		config.Port = "8080"
-		config.DebugLevel = "error"
-		config.UserToken = generateUserToken(200)
-
-		viper.Set("host", config.Host)
-		viper.Set("botname", config.BotName)
-		viper.Set("port", config.Port)
-		viper.Set("debuglevel", config.DebugLevel)
-		viper.Set("usertoken", config.UserToken)
-
-		viper.AddConfigPath(".")
-
-		err := viper.SafeWriteConfig()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-	} else {
-		err := viper.ReadInConfig()
-		if err != nil {
-			log.Fatal("Fatal error config file: %s \n", err)
-		}
-
-		config.Host = viper.GetString("host")
-		if len(config.Host) == 0 {
-			config.Host = "localhost"
-		}
-
-		config.DebugLevel = viper.GetString("debuglevel")
-		if len(config.DebugLevel) == 0 {
-			config.DebugLevel = "error"
-		}
-
-		config.BotName = viper.GetString("botname")
-		if len(config.BotName) == 0 {
-			config.BotName = "Olivia"
-		}
-
-		config.Port = viper.GetString("port")
-		if len(config.Port) == 0 {
-			config.Port = "8080"
-		}
-
-		config.UserToken = viper.GetString("usertoken")
-		if len(config.UserToken) == 0 {
-			config.UserToken = generateUserToken(200)
-			viper.WriteConfig()
-		}
-	}
-
-	return &config
-}
-
-func generateUserToken(length int) string {
-
-	chars := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_)°^¨$*£ù%=+:/;.,?-(}{[]&é@#"
-	b := make([]rune, length)
-	for i := range b {
-		b[i] = rune(chars[rand.Intn(len(chars))])
-	}
-	return string(b)
-}
-
-func isExists(path string) bool {
-
-	if _, err := os.Stat(path); err == nil {
-		return true
-	} else {
-		return false
-	}
-}
-
-func setupLog(filename string) {
-
-	// Create the log file if doesn't exist. And append to it if it already exists.
-	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
-	Formatter := new(log.TextFormatter)
-	// You can change the Timestamp format. But you have to use the same date and time.
-	// "2006-02-02 15:04:06" Works. If you change any digit, it won't work
-	// ie "Mon Jan 2 15:04:05 MST 2006" is the reference time. You can't change it
-	Formatter.TimestampFormat = "02-01-2006 15:04:05"
-	Formatter.FullTimestamp = true
-	log.SetFormatter(Formatter)
-	if err != nil {
-		// Cannot open log file. Logging to stderr
-		fmt.Println(err)
-	} else {
-		log.SetOutput(f)
-	}
-}
