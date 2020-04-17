@@ -17,8 +17,10 @@ import (
 	"time"
 )
 
-const logfilename = "logfile.log"
-const configfilename = "config"
+const (
+	logFileName    = "logfile.log"
+	configFileName = "config"
+)
 
 type Configuration struct {
 	Port       string
@@ -61,8 +63,8 @@ type Reminder struct {
 
 func main() {
 
-	setupLog(logfilename)
-	config := setupConfig(configfilename)
+	setupLog(logFileName)
+	config := setupConfig(configFileName)
 	setupLogLevel(*config)
 
 	u := url.URL{Scheme: "ws", Host: config.Host + ":" + config.Port, Path: "/websocket"}
