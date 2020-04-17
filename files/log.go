@@ -8,18 +8,12 @@ import (
 
 // SetupLogLevel gets the debug level from the configuration and sets it
 func SetupLogLevel(configuration Configuration) {
-	switch configuration.DebugLevel {
-	case "debug":
-		log.SetLevel(log.DebugLevel)
-	case "info":
-		log.SetLevel(log.InfoLevel)
-	case "warn":
-		log.SetLevel(log.WarnLevel)
-	case "error":
-		log.SetLevel(log.ErrorLevel)
-	default:
-		log.SetLevel(log.ErrorLevel)
+	level, err := log.ParseLevel(configuration.DebugLevel)
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	log.SetLevel(level)
 }
 
 // SetupLog creates the log file with a given filename
