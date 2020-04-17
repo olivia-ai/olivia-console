@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// SetupLogLevel gets the debug level from the configuration and sets it
 func SetupLogLevel(configuration Configuration) {
 	switch configuration.DebugLevel {
 	case "debug":
@@ -21,6 +22,7 @@ func SetupLogLevel(configuration Configuration) {
 	}
 }
 
+// SetupLog creates the log file with a given filename
 func SetupLog(filename string) {
 	// Create the log file if doesn't exist. And append to it if it already exists.
 	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)

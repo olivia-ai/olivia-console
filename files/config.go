@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 )
 
+// Configuration is the data required to start the tool
 type Configuration struct {
 	Port       string
 	Host       string
@@ -17,21 +18,23 @@ type Configuration struct {
 	UserToken  string
 }
 
+// FileExists checks if a file exists at a given path, it returns the condition
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
 
 	return err == nil
 }
 
+// GenerateToken returns a random token of 50 characters
 func GenerateToken() string {
-	b := make([]byte, 30)
+	b := make([]byte, 50)
 	rand.Read(b)
 
 	return fmt.Sprintf("%x", b)
 }
 
+// SetupConfig initializes the config file if it does not exists and returns the config itself
 func SetupConfig(filename string) *Configuration {
-
 	config := Configuration{}
 	viper.SetConfigName(filename)
 	viper.SetConfigType("toml")
