@@ -2,8 +2,6 @@
   <br>
   <img src="https://olivia-ai.org/img/icons/olivia-with-text.png" alt="Olivia's character" width="300">
   <br>
-  <img src="./olivia-cc.svg">
-  <br>
 </h1>
 
 <h4 align="center">📟Console client for Olivia</h4>
@@ -23,6 +21,12 @@
 
 # Getting started
 Console client for [Olivia](https://github.com/olivia-ai/olivia)
+
+<p align="center">
+<br>
+<img src="./olivia-cc.svg">
+<br>
+</p>
 
 ## How to use it.
 For the first time - you can simple run - ./main
