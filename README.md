@@ -1,6 +1,7 @@
 <h1 align="center">
   <br>
   <img src="https://olivia-ai.org/img/icons/olivia-with-text.png" alt="Olivia's character" width="300">
+  <br>
   <img src="./olivia-cc.svg">
   <br>
 </h1>
@@ -9,7 +10,6 @@
 
 <p align="center">
   <a href="https://goreportcard.com/report/github.com/olivia-ai/olivia-console"><img src="https://goreportcard.com/badge/github.com/olivia-ai/olivia-console"></a>
-  <br>
   <img src="https://github.com/olivia-ai/olivia-console/workflows/Format%20checker/badge.svg">
 </p>
 
@@ -48,7 +48,6 @@ It's will create new default config file, and new logfile.
 
 
 # Contributors
-
 <p align="center">
   <img alt="docker installation" height="85" src="https://i.imgur.com/6xr2zdp.png">
 </p>
@@ -56,4 +55,8 @@ It's will create new default config file, and new logfile.
 Thanks to @NerdDoc for the creation of this tool.
 
 # Licence
+<p align="center">
+  <img src="https://i.imgur.com/9Xxtchv.png" height="90">
+</p>
+
 Licensed under MIT
