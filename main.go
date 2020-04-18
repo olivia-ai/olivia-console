@@ -17,7 +17,7 @@ import (
 
 const (
 	logFileName    = "logfile.log"
-	configFileName = "config"
+	configFileName = "config.json"
 )
 
 // RequestMessage is the structure that uses entry connections to chat with the websocket
