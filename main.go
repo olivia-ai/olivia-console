@@ -21,16 +21,16 @@ const (
 
 // RequestMessage is the structure that uses entry connections to chat with the websocket
 type RequestMessage struct {
-	Type        int         `json:"type"` // 0 for handshakes and 1 for messages
-	Content     string      `json:"content"`
-	Token       string      `json:"user_token"`
+	Type        int                    `json:"type"` // 0 for handshakes and 1 for messages
+	Content     string                 `json:"content"`
+	Token       string                 `json:"user_token"`
 	Information map[string]interface{} `json:"information"`
 }
 
 // ResponseMessage is the structure used to reply to the user through the websocket
 type ResponseMessage struct {
-	Content     string      `json:"content"`
-	Tag         string      `json:"tag"`
+	Content     string                 `json:"content"`
+	Tag         string                 `json:"tag"`
 	Information map[string]interface{} `json:"information"`
 }
 
@@ -130,4 +130,3 @@ func main() {
 		information = response.Information
 	}
 }
-
