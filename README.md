@@ -10,7 +10,7 @@
 <p align="center">
   <a href="https://goreportcard.com/report/github.com/olivia-ai/olivia-console"><img src="https://goreportcard.com/badge/github.com/olivia-ai/olivia-console"></a>
   <br>
-  <img src="https://github.com/olivia-ai/olivia/workflows/Format%20checker/badge.svg">
+  <img src="https://github.com/olivia-ai/olivia-console/workflows/Format%20checker/badge.svg">
 </p>
 
 <p align="center">

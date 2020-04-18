@@ -42,7 +42,7 @@ func main() {
 
 	// Initialize the url
 	url := url.URL{Scheme: "ws", Host: config.Host + ":" + config.Port, Path: "/websocket"}
-	log.Info("Connecting to %s..", url.String())
+	log.Info("Connecting to", url.String())
 
 	// Start the connection with the websocket
 	c, _, err := websocket.DefaultDialer.Dial(url.String(), nil)
