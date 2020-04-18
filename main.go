@@ -8,7 +8,6 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/olivia-ai/olivia-console/files"
 	log "github.com/sirupsen/logrus"
-	"golang.org/x/oauth2"
 	"net/url"
 	"os"
 	"strings"
@@ -25,30 +24,14 @@ type RequestMessage struct {
 	Type        int         `json:"type"` // 0 for handshakes and 1 for messages
 	Content     string      `json:"content"`
 	Token       string      `json:"user_token"`
-	Information Information `json:"information"`
+	Information map[string]interface{} `json:"information"`
 }
 
 // ResponseMessage is the structure used to reply to the user through the websocket
 type ResponseMessage struct {
 	Content     string      `json:"content"`
 	Tag         string      `json:"tag"`
-	Information Information `json:"information"`
-}
-
-// Information is the user's information retrieved from the client
-type Information struct {
-	Name           string        `json:"name"`
-	MovieGenres    []string      `json:"movie_genres"`
-	MovieBlacklist []string      `json:"movie_blacklist"`
-	Reminders      []Reminder    `json:"reminders"`
-	SpotifyToken   *oauth2.Token `json:"spotify_token"`
-	SpotifyID      string        `json:"spotify_id"`
-	SpotifySecret  string        `json:"spotify_secret"`
-}
-
-type Reminder struct {
-	Reason string `json:"reason"`
-	Date   string `json:"date"`
+	Information map[string]interface{} `json:"information"`
 }
 
 func main() {
@@ -69,14 +52,11 @@ func main() {
 	}
 	defer c.Close()
 
-	inf := Information{
-		Name: "",
-	}
-
+	information := map[string]interface{}{}
 	request := RequestMessage{
 		Type:        0,
 		Content:     "",
-		Information: inf,
+		Information: information,
 	}
 
 	bytes, err := json.Marshal(request)
@@ -111,7 +91,7 @@ func main() {
 			Type:        MsgType,
 			Content:     text,
 			Token:       config.UserToken,
-			Information: inf,
+			Information: information,
 		}
 
 		newbytes, err := json.Marshal(secondMessage)
@@ -147,7 +127,7 @@ func main() {
 		}
 
 		fmt.Println(color.FgYellow.Render(config.BotName + "> " + response.Content))
-		inf = response.Information
+		information = response.Information
 	}
 }
 

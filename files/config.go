@@ -40,7 +40,7 @@ func SetupConfig(fileName string) *Configuration {
 		Host:       "localhost",
 		DebugLevel: "error",
 		BotName:    "Olivia",
-		UserToken: 	GenerateToken(),
+		UserToken:  GenerateToken(),
 	}
 
 	if FileExists(fileName) {
