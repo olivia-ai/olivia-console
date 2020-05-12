@@ -4,14 +4,15 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/gookit/color"
-	"github.com/gorilla/websocket"
-	"github.com/olivia-ai/olivia-console/files"
-	log "github.com/sirupsen/logrus"
 	"net/url"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/gookit/color"
+	"github.com/gorilla/websocket"
+	"github.com/olivia-ai/olivia-console/files"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -19,12 +20,15 @@ const (
 	configFileName = "config.json"
 )
 
+var locale = "en"
+
 // RequestMessage is the structure that uses entry connections to chat with the websocket
 type RequestMessage struct {
 	Type        int                    `json:"type"` // 0 for handshakes and 1 for messages
 	Content     string                 `json:"content"`
 	Token       string                 `json:"user_token"`
 	Information map[string]interface{} `json:"information"`
+	Locale      string                 `json:"locale"`
 }
 
 // ResponseMessage is the structure used to reply to the user through the websocket
@@ -87,11 +91,16 @@ func main() {
 			break
 		}
 
+		if strings.HasPrefix(text, "/lang") {
+			locale = strings.Split(text, " ")[1]
+		}
+
 		secondMessage := RequestMessage{
 			Type:        MsgType,
 			Content:     text,
 			Token:       config.UserToken,
 			Information: information,
+			Locale:      locale,
 		}
 
 		newbytes, err := json.Marshal(secondMessage)
