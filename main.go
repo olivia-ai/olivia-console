@@ -74,14 +74,14 @@ func main() {
 
 	MsgType := 1
 
-	fmt.Println(color.FgRed.Render("Enter message to " + config.BotName + " (for finish - type 'quit'):"))
+	fmt.Println(color.FgRed.Render("Enter message to " + config.BotName + " (for finish - type 'quit', type '/lang <lang>' to change the language):"))
 
 	messagescanner := bufio.NewScanner(os.Stdin)
 
 	for {
 		messagescanner.Scan()
 		text := messagescanner.Text()
-		if strings.ToLower(text) == "quit" {
+		if strings.ToLower(text) == "/quit" {
 			c.SetWriteDeadline(time.Now().Add(1 * time.Second))
 			c.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 			time.Sleep(1 * time.Second)
@@ -93,6 +93,8 @@ func main() {
 
 		if strings.HasPrefix(text, "/lang") {
 			locale = strings.Split(text, " ")[1]
+			fmt.Printf("Language changed to %s.\n", color.FgMagenta.Render(locale))
+			continue
 		}
 
 		secondMessage := RequestMessage{
