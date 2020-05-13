@@ -19,7 +19,7 @@
   <a href="#license">License</a>
 </p>
 
-# Getting started
+## Getting started
 Console client for [Olivia](https://github.com/olivia-ai/olivia)
 
 <p align="center">
@@ -28,11 +28,11 @@ Console client for [Olivia](https://github.com/olivia-ai/olivia)
 <br>
 </p>
 
-## How to use it.
+### How to use it.
 For the first time - you can simple run - ./main
 It's will create new default config file, and new logfile.
 
-### Example of config file:
+#### Example of config file:
 ```json
 {
  "port": "8080",
@@ -43,7 +43,7 @@ It's will create new default config file, and new logfile.
 }
 ```
 
-### Description:
+#### Description:
 * `bot_name` - name for your bot (default - Olivia)
 * `debug_level` - verbosity (default - error)
 * `host` - host where is running server part of olivia (default - localhost)
@@ -51,14 +51,14 @@ It's will create new default config file, and new logfile.
 * `user_token` - your own token (default - generated on the first run)
 
 
-# Contributors
+## Contributors
 <p align="center">
   <img alt="docker installation" height="85" src="https://i.imgur.com/6xr2zdp.png">
 </p>
 
 Thanks to @NerdDoc for the creation of this tool.
 
-# Licence
+## Licence
 <p align="center">
   <img src="https://i.imgur.com/9Xxtchv.png" height="90">
 </p>
