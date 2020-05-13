@@ -74,11 +74,15 @@ func main() {
 
 	MsgType := 1
 
-	fmt.Println(color.FgRed.Render("Enter message to " + config.BotName + " (for finish - type 'quit', type '/lang <lang>' to change the language):"))
+	fmt.Println(color.Magenta.Render("Enter message to " + config.BotName + " or type:"))
+	fmt.Printf("- %s to quit\n", color.Green.Render("/quit"))
+	fmt.Printf("- %s to change the language\n", color.Green.Render("/lang <en|fr|es...>"))
+	fmt.Println()
 
 	messagescanner := bufio.NewScanner(os.Stdin)
 
 	for {
+		fmt.Print(">")
 		messagescanner.Scan()
 		text := messagescanner.Text()
 		if strings.ToLower(text) == "/quit" {

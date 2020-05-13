@@ -64,3 +64,13 @@ Thanks to @NerdDoc for the creation of this tool.
 </p>
 
 Licensed under MIT
+
+<p align="center">
+  <img width="60" src="https://olivia-ai.org/img/icons/olivia.png">
+<p>
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/hugolgst">Hugo Lageneste</a>
+</p>
+
+![Olivia's wave](https://olivia-ai.org/img/background-olivia.png)
