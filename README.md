@@ -30,6 +30,7 @@ Console client for [Olivia](https://github.com/olivia-ai/olivia)
 
 ### How to use it.
 For the first time - you can simple run - ./main
+Download it from [here](https://github.com/olivia-ai/olivia-console/releases)
 It's will create new default config file, and new logfile.
 
 #### Example of config file:
