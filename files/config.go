@@ -3,16 +3,18 @@ package files
 import (
 	"encoding/json"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"math/rand"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // Configuration is the data required to start the tool
 type Configuration struct {
 	Port       string `json:"port"`
 	Host       string `json:"host"`
+	SSL        bool   `json:"ssl"`
 	DebugLevel string `json:"debug_level"`
 	BotName    string `json:"bot_name"`
 	UserToken  string `json:"user_token"`
@@ -37,6 +39,7 @@ func GenerateToken() string {
 func SetupConfig(fileName string) *Configuration {
 	config := Configuration{
 		Port:       "8080",
+		SSL:        false,
 		Host:       "localhost",
 		DebugLevel: "error",
 		BotName:    "Olivia",
