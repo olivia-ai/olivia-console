@@ -3,19 +3,17 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
-
 	"github.com/gookit/color"
 	"github.com/olivia-ai/olivia-console/files"
 	"github.com/olivia-ai/olivia-kit-go/chat"
+	"os"
+	"strings"
 )
 
 const (
 	logFileName    = "logfile.log"
 	configFileName = "config.json"
 )
-
-var locale = "en"
 
 // RequestMessage is the structure that uses entry connections to chat with the websocket
 type RequestMessage struct {
@@ -56,12 +54,37 @@ func main() {
 	fmt.Printf("- %s to change the language\n", color.Green.Render("/lang <en|fr|es...>"))
 	fmt.Println()
 
-	messagescanner := bufio.NewScanner(os.Stdin)
+	scanner := bufio.NewScanner(os.Stdin)
 
+Loop:
 	for {
 		fmt.Print(">")
-		messagescanner.Scan()
-		text := messagescanner.Text()
+		scanner.Scan()
+		text := scanner.Text()
+
+		switch {
+		case strings.TrimSpace(text) == "":
+			fmt.Println(
+				color.Red.Render("Please enter a message"),
+			)
+			continue Loop
+		case text == "/quit":
+			os.Exit(0)
+		case strings.HasPrefix(text, "/lang"):
+			arguments := strings.Split(text, " ")[1:]
+
+			if len(arguments) != 1 {
+				fmt.Println(
+					color.Red.Render("Wrong number of arguments, language command should contain only the locale"),
+				)
+				continue Loop
+			}
+
+			client.Locale = arguments[0]
+			fmt.Printf("Language changed to %s.\n", color.Magenta.Render(arguments[0]))
+
+			continue Loop
+		}
 
 		response, err := client.SendMessage(text)
 		if err != nil {
